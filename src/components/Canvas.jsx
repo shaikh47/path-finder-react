@@ -14,7 +14,7 @@ function Canvas() {
     for (let i = 0; i < 336; i++) {
       elements.push(<div style={{
         backgroundColor: barrier.includes(i) ? "red" : ""
-      }} className={`${styles.segment}`} key={i} onClick={() => handlSegmenteClick(i)}></div>);
+      }} className={`${styles.segment}`} key={i} onClick={() => handlSegmenteClick(i)}><p>{i}</p></div>);
     }
     return elements;
   };
