@@ -1,5 +1,14 @@
 .container {
   border: 4px solid;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.canvasContainer {
+  border: 4px solid;
   padding: 20px;
   height: 500px;
   width: 1200px;
@@ -24,9 +33,38 @@
 }
 
 .segment p:hover {
-    cursor: default;
+  cursor: default;
 }
 
 .segment:hover {
   background-color: aquamarine;
+}
+
+.buttonContainer {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.buttons {
+  border-radius: 12px;
+
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+
+  padding: 10px 20px;
+  width: 12rem;
+
+  background: #ffffff;
+  border: 2px solid #5f6ce1;
+  color: #5f6ce1;
+  transition: 0.3s;
+}
+
+.buttons:hover {
+  color: #ffffff;
+  background: #5f6ce1;
+  cursor: pointer;
 }
