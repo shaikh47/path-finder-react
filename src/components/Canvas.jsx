@@ -43,8 +43,10 @@ function Canvas() {
 
   useEffect(() => {
     console.log(colorArr);
-    console.log(dijkstras(140, -1, -1, 28, 336));
-    
+    // console.log(dijkstras(beginning, -1, -1, 28, 336));
+    dijkstras(beginning, -1, -1, 28, 336).forEach((value, index) => {
+      
+    });
   }, [colorArr]);
 
   const handlSegmentDrag = (key) => {
@@ -109,7 +111,7 @@ function Canvas() {
               ? "yellow"
               : currentSegment === i
               ? divColors[color]
-              : colorArr[i]
+              : colorArr[i],
 
             // backgroundColor: colorArr[i],
           }}

@@ -34,7 +34,7 @@ export const dijkstras = (
 
   const scanned = [beginning];
 
-  for(let i=0;i<=336;i++) {
+  for(let i=0;i<=2;i++) {
     getAdjacent(scanned[i], maxColumns, maxSegments).forEach((item, index)=> {
       if(!scanned.includes(item)) {
         scanned.push(item);
@@ -42,8 +42,8 @@ export const dijkstras = (
     });
   }
 
-  console.log("duplicates: ", toFindDuplicates(scanned))
   return scanned;
+  return scanned.sort(function(a, b){return a - b});
 };
 
 const getAdjacent = (segmentNumber, maxColumns, maxSegments) => {
