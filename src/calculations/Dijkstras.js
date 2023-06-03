@@ -11,15 +11,15 @@ export const calculate = (
 
 function toFindDuplicates(arry) {
   const uniqueElements = new Set(arry);
-  const filteredElements = arry.filter(item => {
-      if (uniqueElements.has(item)) {
-          uniqueElements.delete(item);
-      } else {
-          return item;
-      }
+  const filteredElements = arry.filter((item) => {
+    if (uniqueElements.has(item)) {
+      uniqueElements.delete(item);
+    } else {
+      return item;
+    }
   });
 
-  return [...new Set(uniqueElements)]
+  return [...new Set(uniqueElements)];
 }
 
 export const dijkstras = (
@@ -30,20 +30,22 @@ export const dijkstras = (
   maxSegments
 ) => {
   const visitedVertices = [];
-  const unvisitedVertices = [];
 
   const scanned = [beginning];
 
-  for(let i=0;i<=2;i++) {
-    getAdjacent(scanned[i], maxColumns, maxSegments).forEach((item, index)=> {
-      if(!scanned.includes(item)) {
+  for (let i = 0; i <= maxSegments; i++) {
+    getAdjacent(scanned[i], maxColumns, maxSegments).forEach((item, index) => {
+      if (!scanned.includes(item) && item < maxSegments) {
         scanned.push(item);
       }
     });
   }
 
+  const unvisitedVertices = Array.from(scanned);
+  console.log(scanned);
+
   return scanned;
-  return scanned.sort(function(a, b){return a - b});
+  // return scanned.sort(function(a, b){return a - b});
 };
 
 const getAdjacent = (segmentNumber, maxColumns, maxSegments) => {

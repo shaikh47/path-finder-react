@@ -9,6 +9,8 @@ const divColors = [
   // Add more colors here
 ];
 
+const animationDelay = 1;
+
 function Canvas() {
   const [barrier, setBarrier] = useState([]);
   const isClicked = useRef(false);
@@ -21,33 +23,36 @@ function Canvas() {
 
   const [colorArr, setColorArr] = useState([]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSegment((prevIndex) => (prevIndex + 1) % 336);
-    }, 5000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  const [dijkstrasPath, setDijkstrasPath] = useState([]);
 
   useEffect(() => {
+    // set the array as state
+    setDijkstrasPath(dijkstras(beginning, -1, -1, 28, 336));
+
     if (colorArr.length !== 0) return;
     const tempArr = [];
     for (let i = 0; i < 336; i++) {
       tempArr.push("white");
     }
     setColorArr(tempArr);
-    console.log(colorArr);
+    // console.log(colorArr);
   }, []);
 
   useEffect(() => {
-    console.log(colorArr);
-    // console.log(dijkstras(beginning, -1, -1, 28, 336));
-    dijkstras(beginning, -1, -1, 28, 336).forEach((value, index) => {
-      
-    });
-  }, [colorArr]);
+    const processItem = async (item) => {
+      // console.log(item); 
+      updateColor(item, "#4bf278");
+    };
+
+    const startIteration = async () => {
+      for (const item of dijkstrasPath) {
+        await new Promise((resolve) => setTimeout(resolve, animationDelay));
+        await processItem(item);
+      }
+    };
+
+    startIteration();
+  }, [dijkstrasPath]);
 
   const handlSegmentDrag = (key) => {
     if (key === beginning || key === destination) return;
@@ -110,7 +115,7 @@ function Canvas() {
               : destination === i
               ? "yellow"
               : currentSegment === i
-              ? divColors[color]
+              ? colorArr[i]
               : colorArr[i],
 
             // backgroundColor: colorArr[i],
