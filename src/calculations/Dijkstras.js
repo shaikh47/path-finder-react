@@ -1,17 +1,6 @@
 // considering neghbor edge weights as constant 1
 const constantEdgeWeight = 1;
 
-export const calculate = (
-  segmentNumber,
-  beginning,
-  destination,
-  barriers,
-  maxColumns,
-  maxSegments
-) => {
-  return getAdjacent(segmentNumber, maxColumns, maxSegments);
-};
-
 function toFindDuplicates(arry) {
   const uniqueElements = new Set(arry);
   const filteredElements = arry.filter((item) => {
