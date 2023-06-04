@@ -26,22 +26,15 @@ function Canvas() {
   const [dijkstrasOptimalPath, setDijkstrasOptimalPath] = useState([]);
 
   const handleStartAlgoClick = () => {
-    setDijkstrasPath(
-      dijkstras(beginning, destination, barrier, 28, 336).scanned
-    );
-
-    setDijkstrasOptimalPath(
-      dijkstras(beginning, destination, barrier, 28, 336).optimalPath
-    );
+    const dijkstrasResult = dijkstras(beginning, destination, barrier, 28, 336);
+    setDijkstrasPath(dijkstrasResult.scanned);
+    setDijkstrasOptimalPath(dijkstrasResult.optimalPath);
   };
 
   useEffect(() => {
     if (dijkstrasPath.length > 0 && dijkstrasOptimalPath.length > 0) {
       const processItem = async (item) => {
-        updateColor(
-          item,
-          "radial-gradient(circle, #78f5de 0%, #06735f 100%)"
-        );
+        updateColor(item, "radial-gradient(circle, #78f5de 0%, #06735f 100%)");
       };
 
       const startIteration = async () => {
@@ -73,7 +66,7 @@ function Canvas() {
       runEffect();
     }
   }, [dijkstrasPath, dijkstrasOptimalPath]);
-  
+
   const handlSegmentDrag = (key) => {
     if (key === beginning || key === destination) return;
     if (!isClicked.current) return;
@@ -162,15 +155,21 @@ function Canvas() {
         <button
           className={`${styles.buttons}`}
           onClick={() => {
-            console.log("these are the barriers: ", barrier);
           }}
         >
           Add Destination
         </button>
         <button
           className={`${styles.buttons}`}
-          onClick={handleStartAlgoClick}
+          onClick={() => {
+            const updatedBarrier = [...barrier];
+            updatedBarrier.pop();
+            setBarrier(updatedBarrier);
+          }}
         >
+          Remove Barrier
+        </button>
+        <button className={`${styles.buttons}`} onClick={handleStartAlgoClick}>
           Start Algo
         </button>
       </div>
