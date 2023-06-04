@@ -1,3 +1,6 @@
+// considering neghbor edge weights as constant 1
+const constantEdgeWeight = 1;
+
 export const calculate = (
   segmentNumber,
   beginning,
@@ -29,7 +32,10 @@ export const dijkstras = (
   maxColumns,
   maxSegments
 ) => {
+  let pathTable = [];
   const visitedVertices = [];
+
+  console.log("These the the barriers from the dijkstras: ", barriers);
 
   const scanned = [beginning];
 
@@ -41,11 +47,129 @@ export const dijkstras = (
     });
   }
 
-  const unvisitedVertices = Array.from(scanned);
-  console.log(scanned);
+  let unvisitedVertices = Array.from(scanned);
+  const pathBeginning = {
+    vertex: beginning,
+    shortestDistanceFromBeginning: 0,
+    previousVertex: null,
+  };
+  pathTable.push(pathBeginning);
 
-  return scanned;
+  // prepare the rest of the table
+  for (let i = 0; i < maxSegments; i++) {
+    if (i === beginning) continue;
+    const tempPath = {
+      vertex: i,
+      shortestDistanceFromBeginning: Infinity,
+      previousVertex: null,
+    };
+    pathTable.push(tempPath);
+  }
+
+  // console.log(pathTable)
+  let fallbackCount = 0;
+  while (unvisitedVertices.length !== 0) {
+    // get the vertex with the shortest distance in the table and it must be in the unvisited list of vertices
+    const smallestDist = getSmallestPath(pathTable, unvisitedVertices);
+    // console.log("Smallest existing path: ", smallestDist)
+
+    // break as the unvisitedVertices list is empty
+    if (smallestDist === null) break;
+
+    // get the adjacent unvisited vertices
+    const adjacent = getAdjacent(smallestDist.vertex, maxColumns, maxSegments);
+
+    const unvisitedAdjacent = adjacent.filter((currentValue) => {
+      return unvisitedVertices.includes(currentValue);
+    });
+
+    // prepare the edge table for the adjacent nodes
+    unvisitedAdjacent.forEach((item, index) => {
+      // get distance from 'smallestDist' with all neighbors 'unvisitedAdjacent'
+      let weight;
+      if(barriers.includes(item)) {
+        weight=Infinity;
+      } else {
+        weight=constantEdgeWeight;
+      }
+      const distance =
+        findArrElement(pathTable, smallestDist.vertex)
+          .shortestDistanceFromBeginning + weight;
+      if (
+        distance < findArrElement(pathTable, item).shortestDistanceFromBeginning
+      ) {
+        // replace the wight and the previousVertex in the table
+        pathTable = modifyArray(pathTable, item, distance, smallestDist.vertex);
+      }
+    });
+
+    // remove the current vertex from the unvisited vertices array
+    unvisitedVertices = deleteArrElement(
+      unvisitedVertices,
+      smallestDist.vertex
+    );
+
+    // add it to the visited vertices list
+    visitedVertices.push(smallestDist);
+    fallbackCount++;
+  }
+
+  const optimalPath = constructPath(pathTable, beginning, destination).reverse();
+  console.log("The optimal path is : ", optimalPath);
+
+  return {scanned, optimalPath};
   // return scanned.sort(function(a, b){return a - b});
+};
+
+const modifyArray = (arr, vertex, newDistance, newPreviousVertex) => {
+  const modifiedArray = arr.map((element) => {
+    if (element.vertex === vertex) {
+      return {
+        ...element,
+        shortestDistanceFromBeginning: newDistance,
+        previousVertex: newPreviousVertex,
+      };
+    } else {
+      return element;
+    }
+  });
+
+  return modifiedArray;
+};
+
+const findArrElement = (arr, target) => {
+  return arr.find((element) => {
+    return element.vertex == target;
+  });
+};
+
+const getSmallestPath = (pathTable, unvisitedVertices) => {
+  const availablePaths = pathTable.filter((path) =>
+    unvisitedVertices.includes(path.vertex)
+  );
+
+  if (availablePaths.length === 0) {
+    return null;
+  }
+
+  const smallestPath = availablePaths.reduce((smallest, current) => {
+    if (
+      current.shortestDistanceFromBeginning <
+      smallest.shortestDistanceFromBeginning
+    ) {
+      return current;
+    } else {
+      return smallest;
+    }
+  }, availablePaths[0]);
+
+  return smallestPath;
+};
+
+const deleteArrElement = (arr, element) => {
+  const index = arr.indexOf(element);
+  const x = arr.splice(index, 1);
+  return arr;
 };
 
 const getAdjacent = (segmentNumber, maxColumns, maxSegments) => {
@@ -77,11 +201,11 @@ const getAdjacent = (segmentNumber, maxColumns, maxSegments) => {
 
     if (result.upperSegment !== undefined) {
       result.topLeftCornerSegment = topLeftCornerSegment;
-      resultArr.push(topLeftCornerSegment);
+      // resultArr.push(topLeftCornerSegment);
     }
     if (result.lowerSegment !== undefined) {
       result.bottomLeftCornerSegment = bottomLeftCornerSegment;
-      resultArr.push(bottomLeftCornerSegment);
+      // resultArr.push(bottomLeftCornerSegment);
     }
   }
   if (rightSegment % maxColumns !== 0) {
@@ -90,13 +214,27 @@ const getAdjacent = (segmentNumber, maxColumns, maxSegments) => {
 
     if (result.upperSegment !== undefined) {
       result.topRightCornerSegment = topRightCornerSegment;
-      resultArr.push(topRightCornerSegment);
+      // resultArr.push(topRightCornerSegment);
     }
     if (result.lowerSegment !== undefined) {
       result.bottomRightCornerSegment = bottomRightCornerSegment;
-      resultArr.push(bottomRightCornerSegment);
+      // resultArr.push(bottomRightCornerSegment);
     }
   }
 
   return resultArr;
+};
+
+const constructPath = (pathTable, beginning, destination) => {
+  let segment = findArrElement(pathTable, destination);
+  const fullPath = [];
+
+  fullPath.push(destination);
+
+  while (segment.vertex !== beginning) {
+    destination = segment.previousVertex;
+    segment = findArrElement(pathTable, destination);
+    fullPath.push(segment.vertex);
+  }
+  return fullPath;
 };

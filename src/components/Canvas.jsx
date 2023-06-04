@@ -16,44 +16,64 @@ function Canvas() {
   const isClicked = useRef(false);
 
   const [beginning, setBeginning] = useState(140);
-  const [destination, setDestination] = useState(167);
+  const [destination, setDestination] = useState(335);
 
   const [currentSegment, setCurrentSegment] = useState(0);
-  const [color, setColor] = useState(2);
 
   const [colorArr, setColorArr] = useState([]);
 
   const [dijkstrasPath, setDijkstrasPath] = useState([]);
+  const [dijkstrasOptimalPath, setDijkstrasOptimalPath] = useState([]);
+
+  const handleStartAlgoClick = () => {
+    setDijkstrasPath(
+      dijkstras(beginning, destination, barrier, 28, 336).scanned
+    );
+
+    setDijkstrasOptimalPath(
+      dijkstras(beginning, destination, barrier, 28, 336).optimalPath
+    );
+  };
 
   useEffect(() => {
-    // set the array as state
-    setDijkstrasPath(dijkstras(beginning, -1, -1, 28, 336));
+    if (dijkstrasPath.length > 0 && dijkstrasOptimalPath.length > 0) {
+      const processItem = async (item) => {
+        updateColor(
+          item,
+          "radial-gradient(circle, #78f5de 0%, #06735f 100%)"
+        );
+      };
 
-    if (colorArr.length !== 0) return;
-    const tempArr = [];
-    for (let i = 0; i < 336; i++) {
-      tempArr.push("white");
+      const startIteration = async () => {
+        for (const item of dijkstrasPath) {
+          await new Promise((resolve) => setTimeout(resolve, animationDelay));
+          await processItem(item);
+        }
+      };
+
+      const processItemOptimized = async (item) => {
+        updateColor(item, "#7a1ed6");
+      };
+
+      const startIterationOptimized = async () => {
+        for (const item of dijkstrasOptimalPath) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, animationDelay + 25)
+          );
+          await processItemOptimized(item);
+        }
+      };
+
+      const runEffect = async () => {
+        await startIteration();
+        await startIterationOptimized();
+        console.log("completed");
+      };
+
+      runEffect();
     }
-    setColorArr(tempArr);
-    // console.log(colorArr);
-  }, []);
-
-  useEffect(() => {
-    const processItem = async (item) => {
-      // console.log(item); 
-      updateColor(item, "#4bf278");
-    };
-
-    const startIteration = async () => {
-      for (const item of dijkstrasPath) {
-        await new Promise((resolve) => setTimeout(resolve, animationDelay));
-        await processItem(item);
-      }
-    };
-
-    startIteration();
-  }, [dijkstrasPath]);
-
+  }, [dijkstrasPath, dijkstrasOptimalPath]);
+  
   const handlSegmentDrag = (key) => {
     if (key === beginning || key === destination) return;
     if (!isClicked.current) return;
@@ -108,7 +128,7 @@ function Canvas() {
         <div
           style={{
             // backgroundColor: (beginning===i ? (destination===i?"blue":"") : ""),
-            backgroundColor: barrier.includes(i)
+            background: barrier.includes(i)
               ? "red"
               : beginning === i
               ? "green"
@@ -127,7 +147,7 @@ function Canvas() {
           onMouseDown={() => handleMouseDown(i)}
           onClick={() => handlSegmenteClick(i)}
         >
-          <p>{i}</p>
+          {/* <p>{i}</p> */}
         </div>
       );
     }
@@ -139,7 +159,20 @@ function Canvas() {
       <div className={`${styles.canvasContainer}`}>{renderSegments()}</div>
       <div className={`${styles.buttonContainer}`}>
         <button className={`${styles.buttons}`}>Add Beginning</button>
-        <button className={`${styles.buttons}`}>Add Destination</button>
+        <button
+          className={`${styles.buttons}`}
+          onClick={() => {
+            console.log("these are the barriers: ", barrier);
+          }}
+        >
+          Add Destination
+        </button>
+        <button
+          className={`${styles.buttons}`}
+          onClick={handleStartAlgoClick}
+        >
+          Start Algo
+        </button>
       </div>
     </div>
   );
