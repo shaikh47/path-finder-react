@@ -18,7 +18,7 @@ export const dijkstras = (
   for (let i = 0; i <= maxSegments; i++) {
     getAdjacent(scanned[i], maxColumns, maxSegments).forEach((item, index) => {
       if (!scanned.includes(item) && item < maxSegments) {
-        scanned.push(item);
+        if (!barriers.includes(item)) scanned.push(item);
       }
     });
   }

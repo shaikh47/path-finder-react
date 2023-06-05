@@ -5,7 +5,7 @@ import { dijkstras } from "../calculations/Dijkstras";
 const animationDelay = 1;
 const totalSegments = 918;
 const totalColumn = 51;
-const traverseTillDestinaton = false;
+const traverseTillDestinaton = true;
 
 const delay = (delayInms) => {
   if(delayInms<=0) return; 
