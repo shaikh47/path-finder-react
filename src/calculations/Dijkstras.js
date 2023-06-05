@@ -1,19 +1,6 @@
 // considering neghbor edge weights as constant 1
 const constantEdgeWeight = 1;
 
-function toFindDuplicates(arry) {
-  const uniqueElements = new Set(arry);
-  const filteredElements = arry.filter((item) => {
-    if (uniqueElements.has(item)) {
-      uniqueElements.delete(item);
-    } else {
-      return item;
-    }
-  });
-
-  return [...new Set(uniqueElements)];
-}
-
 export const dijkstras = (
   beginning,
   destination,
@@ -55,8 +42,6 @@ export const dijkstras = (
     pathTable.push(tempPath);
   }
 
-  // console.log(pathTable)
-  let fallbackCount = 0;
   while (unvisitedVertices.length !== 0) {
     // get the vertex with the shortest distance in the table and it must be in the unvisited list of vertices
     const smallestDist = getSmallestPath(pathTable, unvisitedVertices);
@@ -76,10 +61,10 @@ export const dijkstras = (
     unvisitedAdjacent.forEach((item, index) => {
       // get distance from 'smallestDist' with all neighbors 'unvisitedAdjacent'
       let weight;
-      if(barriers.includes(item)) {
-        weight=Infinity;
+      if (barriers.includes(item)) {
+        weight = Infinity;
       } else {
-        weight=constantEdgeWeight;
+        weight = constantEdgeWeight;
       }
       const distance =
         findArrElement(pathTable, smallestDist.vertex)
@@ -100,14 +85,14 @@ export const dijkstras = (
 
     // add it to the visited vertices list
     visitedVertices.push(smallestDist);
-    fallbackCount++;
   }
 
-  const optimalPath = constructPath(pathTable, beginning, destination).reverse();
-  console.log("The optimal path is : ", optimalPath);
-
-  return {scanned, optimalPath};
-  // return scanned.sort(function(a, b){return a - b});
+  const optimalPath = constructPath(
+    pathTable,
+    beginning,
+    destination
+  ).reverse();
+  return { scanned, optimalPath };
 };
 
 const modifyArray = (arr, vertex, newDistance, newPreviousVertex) => {
