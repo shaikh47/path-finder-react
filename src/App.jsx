@@ -6,8 +6,8 @@ function App() {
   return (
     <div className="container">
       <h1>Dijkstras</h1>
-      {/* <Canvas /> */}
-      <Test />
+      <Canvas />
+      {/* <Test /> */}
     </div>
   );
 }

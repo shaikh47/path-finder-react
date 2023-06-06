@@ -5,6 +5,7 @@ import { dijkstras } from "../calculations/Dijkstras";
 const animationDelay = 1;
 const traverseTillDestinaton = true;
 const segmentDimension = 30;
+const showSegmentNumbers = false;
 
 const delay = (delayInms) => {
   if (delayInms <= 0) return;
@@ -142,7 +143,7 @@ function Canvas() {
             onMouseDown={() => handleMouseDown(i)}
             onClick={() => handlSegmenteClick(i)}
           >
-            <p style={{ fontSize: "10px", userSelect: "none" }}>{i}</p>
+            {showSegmentNumbers?<p style={{ fontSize: "10px", userSelect: "none" }}>{i}</p>:""}
           </div>
         );
       }
