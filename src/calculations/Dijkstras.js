@@ -10,9 +10,6 @@ export const dijkstras = (
 ) => {
   let pathTable = [];
   const visitedVertices = [];
-
-  console.log("These the the barriers from the dijkstras: ", barriers);
-
   const scanned = [beginning];
 
   for (let i = 0; i <= maxSegments; i++) {
@@ -73,7 +70,7 @@ export const dijkstras = (
         distance < findArrElement(pathTable, item).shortestDistanceFromBeginning
       ) {
         // replace the wight and the previousVertex in the table
-        pathTable = modifyArray(pathTable, item, distance, smallestDist.vertex);
+        pathTable = modifyArrayByVertex(pathTable, item, distance, smallestDist.vertex);
       }
     });
 
@@ -95,7 +92,7 @@ export const dijkstras = (
   return { scanned, optimalPath };
 };
 
-const modifyArray = (arr, vertex, newDistance, newPreviousVertex) => {
+const modifyArrayByVertex = (arr, vertex, newDistance, newPreviousVertex) => {
   const modifiedArray = arr.map((element) => {
     if (element.vertex === vertex) {
       return {
