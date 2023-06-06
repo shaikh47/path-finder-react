@@ -16,8 +16,8 @@ function Canvas() {
   const [barrier, setBarrier] = useState([]);
   const isClicked = useRef(false);
 
-  const [beginning, setBeginning] = useState(686);
-  const [destination, setDestination] = useState(349);
+  const [beginning, setBeginning] = useState(0);
+  const [destination, setDestination] = useState((Math.floor(window.innerHeight / segmentDimension) - 7) * (Math.floor(window.innerWidth / segmentDimension) - 2)-1);
 
   const [currentSegment, setCurrentSegment] = useState(0);
 
