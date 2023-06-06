@@ -16,7 +16,7 @@ function Canvas() {
   const [barrier, setBarrier] = useState([]);
   const isClicked = useRef(false);
 
-  const [beginning, setBeginning] = useState(0);
+  const [beginning, setBeginning] = useState(686);
   const [destination, setDestination] = useState(349);
 
   const [currentSegment, setCurrentSegment] = useState(0);
@@ -73,6 +73,40 @@ function Canvas() {
       runEffect();
     }
   }, [dijkstrasPath, dijkstrasOptimalPath]);
+
+  useEffect(() => {
+    if (dijkstrasPath.length > 0 && dijkstrasOptimalPath.length > 0) {
+      const dijkstrasResult = dijkstras(
+        beginning,
+        destination,
+        barrier,
+        column,
+        row * column
+      );
+      const startIteration = async () => {
+        for (const item of dijkstrasResult.scanned) {
+          if (item === destination && traverseTillDestinaton) break;
+          updateColor(
+            item,
+            "radial-gradient(circle, #708cff 0%, #082cc2 100%)"
+          );
+        }
+      };
+
+      const startIterationOptimized = async () => {
+        for (const item of dijkstrasResult.optimalPath) {
+          updateColor(item, "#57ffc4");
+        }
+      };
+
+      const runEffect = async () => {
+        startIteration();
+        startIterationOptimized();
+        console.log("completed");
+      };
+      runEffect();
+    }
+  }, [barrier, beginning, destination]);
 
   const handlSegmentDrag = (key) => {
     if (key === beginning || key === destination) return;
@@ -143,7 +177,11 @@ function Canvas() {
             onMouseDown={() => handleMouseDown(i)}
             onClick={() => handlSegmenteClick(i)}
           >
-            {showSegmentNumbers?<p style={{ fontSize: "10px", userSelect: "none" }}>{i}</p>:""}
+            {showSegmentNumbers ? (
+              <p style={{ fontSize: "10px", userSelect: "none" }}>{i}</p>
+            ) : (
+              ""
+            )}
           </div>
         );
       }
@@ -213,16 +251,22 @@ function Canvas() {
         >
           Remove Barrier
         </button>
-        <button className={`${styles.buttons} ${styles.startButton}`} onClick={handleStartAlgoClick}>
+        <button
+          className={`${styles.buttons} ${styles.startButton}`}
+          onClick={handleStartAlgoClick}
+        >
           Start Algo
         </button>
 
-        <button className={`${styles.buttons} ${styles.resetButton}`} onClick={() => {
-          setDijkstrasPath([]);
-          setBarrier([]);
-          setDijkstrasOptimalPath([]);
-          setColorArr([]);
-        }}>
+        <button
+          className={`${styles.buttons} ${styles.resetButton}`}
+          onClick={() => {
+            setDijkstrasPath([]);
+            setBarrier([]);
+            setDijkstrasOptimalPath([]);
+            setColorArr([]);
+          }}
+        >
           Reset
         </button>
       </div>
