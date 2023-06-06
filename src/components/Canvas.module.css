@@ -53,18 +53,18 @@
   border-radius: 12px;
 
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.75rem;
   text-align: center;
 
   padding: 10px 20px;
-  min-width: 12rem;
+  width:10rem;
 
   background: #ffffff;
-  border: 2px solid #5f6ce1;
+  border: 1px solid #5f6ce1;
   color: #5f6ce1;
   transition: 0.3s;
 
-  flex-basis: 15%;
+  flex-basis: 10%;
 }
 
 .buttons:hover {
@@ -83,10 +83,10 @@
 }
 
 .startButton {
-  color: #00f03c;
-  border: 2px solid #00f03c;
+  color: #1d8f35;
+  border: 2px solid #1d8f35;
 }
 
 .startButton:hover {
-  background: #00f03c;
+  background: #1d8f35;
 }
