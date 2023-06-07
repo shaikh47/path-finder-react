@@ -6,6 +6,8 @@ const animationDelay = 1;
 const traverseTillDestinaton = true;
 const segmentDimension = 30;
 const showSegmentNumbers = false;
+const row = Math.floor(window.innerHeight / segmentDimension) - 7;
+const column = Math.floor(window.innerWidth / segmentDimension) - 2;
 
 const delay = (delayInms) => {
   if (delayInms <= 0) return;
@@ -17,7 +19,7 @@ function Canvas() {
   const isClicked = useRef(false);
 
   const [beginning, setBeginning] = useState(0);
-  const [destination, setDestination] = useState((Math.floor(window.innerHeight / segmentDimension) - 7) * (Math.floor(window.innerWidth / segmentDimension) - 2)-1);
+  const [destination, setDestination] = useState(row * column - 1);
 
   const [currentSegment, setCurrentSegment] = useState(0);
 
@@ -25,13 +27,6 @@ function Canvas() {
 
   const [dijkstrasPath, setDijkstrasPath] = useState([]);
   const [dijkstrasOptimalPath, setDijkstrasOptimalPath] = useState([]);
-
-  const [row, setRow] = useState(
-    Math.floor(window.innerHeight / segmentDimension) - 7
-  );
-  const [column, setColumn] = useState(
-    Math.floor(window.innerWidth / segmentDimension) - 2
-  );
 
   const handleStartAlgoClick = () => {
     const dijkstrasResult = dijkstras(
@@ -53,7 +48,7 @@ function Canvas() {
           await delay(animationDelay);
           updateColor(
             item,
-            "radial-gradient(circle, #708cff 0%, #082cc2 100%)"
+            "radial-gradient(circle, #576CBC 0%, #19376D 100%)"
           );
         }
       };
@@ -61,7 +56,7 @@ function Canvas() {
       const startIterationOptimized = async () => {
         for (const item of dijkstrasOptimalPath) {
           await delay(animationDelay + 30);
-          updateColor(item, "#57ffc4");
+          updateColor(item, "#00DFA2");
         }
       };
 
@@ -88,14 +83,14 @@ function Canvas() {
           if (item === destination && traverseTillDestinaton) break;
           updateColor(
             item,
-            "radial-gradient(circle, #708cff 0%, #082cc2 100%)"
+            "radial-gradient(circle, #576CBC 0%, #19376D 100%)"
           );
         }
       };
 
       const startIterationOptimized = async () => {
         for (const item of dijkstrasResult.optimalPath) {
-          updateColor(item, "#57ffc4");
+          updateColor(item, "#00DFA2");
         }
       };
 
@@ -161,7 +156,7 @@ function Canvas() {
           <div
             style={{
               background: barrier.includes(i)
-                ? "#606060"
+                ? "#66347F"
                 : beginning === i
                 ? "green"
                 : destination === i
@@ -180,7 +175,7 @@ function Canvas() {
             {showSegmentNumbers ? (
               <p style={{ fontSize: "10px", userSelect: "none" }}>{i}</p>
             ) : (
-              ""
+              <></>
             )}
           </div>
         );
@@ -203,42 +198,6 @@ function Canvas() {
         <button className={`${styles.buttons}`}>Add Beginning</button>
         <button className={`${styles.buttons}`} onClick={() => {}}>
           Add Destination
-        </button>
-
-        <button
-          className={`${styles.buttons}`}
-          onClick={() => {
-            setRow(row + 1);
-          }}
-        >
-          Increase Row
-        </button>
-
-        <button
-          className={`${styles.buttons}`}
-          onClick={() => {
-            setRow(row - 1);
-          }}
-        >
-          Decrease Row
-        </button>
-
-        <button
-          className={`${styles.buttons}`}
-          onClick={() => {
-            setColumn(column + 1);
-          }}
-        >
-          Increase Column
-        </button>
-
-        <button
-          className={`${styles.buttons}`}
-          onClick={() => {
-            setColumn(column - 1);
-          }}
-        >
-          Decrease Column
         </button>
 
         <button

@@ -30,6 +30,7 @@
   align-items: center;
 
   background-color: rgb(255, 255, 255);
+  background-color: #393E46;
 }
 
 .segment p:hover {
@@ -37,7 +38,7 @@
 }
 
 .segment:hover {
-  background-color: aquamarine;
+  background-color: #635985;
 }
 
 .buttonContainer {
@@ -59,12 +60,12 @@
   padding: 10px 20px;
   width:10rem;
 
-  background: #ffffff;
+  background: #2B2E4A;
   border: 1px solid #5f6ce1;
   color: #5f6ce1;
   transition: 0.3s;
 
-  flex-basis: 10%;
+  flex-basis: 16%;
 }
 
 .buttons:hover {
