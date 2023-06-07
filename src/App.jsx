@@ -8,8 +8,8 @@ function App() {
   return (
     <div className="container">
       <h1>Dijkstras</h1>
-      <Switch />
-      {/* <Canvas /> */}
+      {/* <Switch /> */}
+      <Canvas />
       {/* <Test /> */}
     </div>
   );

@@ -10,7 +10,11 @@
   padding: 5px;
   background-color: #207adf;
   border-radius: 20px;
-  box-shadow: inset 0px 0px 5px 2px #033b8f;
+  box-shadow: inset 0px 0px 5px 2px #033b8f, 3px 3px 3px black;
+
+  /* box-shadow: 3px 3px 3px black, inset 2px 2px 3px rgb(2, 14, 70),
+    inset 2px 2px 20px rgb(0, 99, 248); */
+
   transition: background-color 0.4s ease;
   cursor: pointer;
   overflow: hidden;
@@ -18,7 +22,10 @@
 
 .container_night {
   background-color: #222;
-  box-shadow: inset 0px 0px 5px 2px #000000;
+  box-shadow: inset 0px 0px 5px 2px #000000, 3px 3px 3px black;
+
+  /* box-shadow: 3px 3px 3px black, inset 2px 2px 3px rgb(0, 0, 0),
+    inset 2px 2px 20px rgb(0, 0, 0); */
 }
 
 .dot_day {
