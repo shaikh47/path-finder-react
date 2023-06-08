@@ -15,9 +15,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* flex-wrap: wrap; */
-
-  /* background-color: rgb(0, 203, 239); */
 }
 
 .segment {
@@ -30,15 +27,22 @@
   align-items: center;
 
   background-color: rgb(255, 255, 255);
-  background-color: #393E46;
+}
+
+.segmentDarkMode {
+  background-color: #393e46;
 }
 
 .segment p:hover {
   cursor: default;
 }
 
+.segmentDarkMode:hover {
+  background-color: #635985 !important;
+}
+
 .segment:hover {
-  background-color: #635985;
+  background-color: #00DFA2;
 }
 
 .buttonContainer {
@@ -58,14 +62,18 @@
   text-align: center;
 
   padding: 10px 20px;
-  width:10rem;
+  width: 10rem;
 
-  background: #2B2E4A;
+  background: #ffffff;
   border: 1px solid #5f6ce1;
   color: #5f6ce1;
   transition: 0.3s;
 
   flex-basis: 16%;
+}
+
+.buttonsDarkMode {
+  background: #2b2e4a;
 }
 
 .buttons:hover {

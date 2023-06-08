@@ -1,16 +1,10 @@
-.rough {
-  height: 20px;
-  width: 60px;
-  padding: 5px;
-}
-
 .container_day {
   height: 20px;
   width: 60px;
   padding: 5px;
   background-color: #207adf;
   border-radius: 20px;
-  box-shadow: inset 0px 0px 5px 2px #033b8f, 2px 2px 5px black;
+  box-shadow: inset 0px 0px 5px 2px #033b8f, 2px 2px 5px rgb(194, 188, 188);
 
   transition: background-color 0.4s ease;
   cursor: pointer;
