@@ -11,6 +11,12 @@ h1 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
+  padding-top: 40px;
   min-width: 100%;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
