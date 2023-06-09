@@ -7,11 +7,27 @@ const Navbar = () => {
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
 
   const [current, setCurrent] = useState("mail");
+  const [algorithm, setAlgorithm] = useState("Dijkstras");
 
   const onClick = (e) => {
-    console.log("click ", e);
-    setCurrent(e.key);
+    console.log("clicked ", e);
+    // setCurrent(e.key);
   };
+
+  const onAlgorithmClick = (e) => {
+    console.log("selected algo:  ", e.key);
+    setAlgorithm(e.key);
+  };
+
+  const algoTitle = (
+    <p
+      style={{
+        margin: "0px",
+      }}
+    >
+      <b>Choose Algorithm:</b> {algorithm}
+    </p>
+  );
 
   return (
     <Menu
@@ -21,18 +37,17 @@ const Navbar = () => {
       theme={darkMode ? "dark" : "light"}
       className="menu"
     >
-      <Menu.Item key="setting:1">Option 1</Menu.Item>
-      <Menu.Item key="setting:2">Option 2</Menu.Item>
-      <Menu.Item key="setting:3">Option 3</Menu.Item>
-
-      <Menu.SubMenu key="submenu:1" title="Choose Algorithm">
-        <Menu.Item key={1}>Dijkstras</Menu.Item>
-        <Menu.Item key={2}>A*</Menu.Item>
-        <Menu.Item key={3}>BFS</Menu.Item>
-        <Menu.Item key={4}>DFS</Menu.Item>
+      <Menu.SubMenu
+        key="submenu:1"
+        title={algoTitle}
+        onClick={onAlgorithmClick}
+      >
+        <Menu.Item key={"Dijkstras"}>Dijkstras</Menu.Item>
+        <Menu.Item key={"A*"}>A*</Menu.Item>
+        <Menu.Item key={"BFS"}>BFS</Menu.Item>
+        <Menu.Item key={"DFS"}>DFS</Menu.Item>
       </Menu.SubMenu>
 
-      <Menu.Item key="setting:4">Option 4</Menu.Item>
       <Menu.Item
         style={{
           display: "flex",
