@@ -1,7 +1,9 @@
+import { deleteArrElement, getAdjacent } from "./Utils";
+
 // considering neghbor edge weights as constant 1
 const constantEdgeWeight = 1;
 
-export const dijkstras = (
+const dijkstras = (
   beginning,
   destination,
   barriers,
@@ -42,7 +44,6 @@ export const dijkstras = (
   while (unvisitedVertices.length !== 0) {
     // get the vertex with the shortest distance in the table and it must be in the unvisited list of vertices
     const smallestDist = getSmallestPath(pathTable, unvisitedVertices);
-    // console.log("Smallest existing path: ", smallestDist)
 
     // break as the unvisitedVertices list is empty
     if (smallestDist === null) break;
@@ -70,7 +71,12 @@ export const dijkstras = (
         distance < findArrElement(pathTable, item).shortestDistanceFromBeginning
       ) {
         // replace the wight and the previousVertex in the table
-        pathTable = modifyArrayByVertex(pathTable, item, distance, smallestDist.vertex);
+        pathTable = modifyArrayByVertex(
+          pathTable,
+          item,
+          distance,
+          smallestDist.vertex
+        );
       }
     });
 
@@ -137,75 +143,17 @@ const getSmallestPath = (pathTable, unvisitedVertices) => {
   return smallestPath;
 };
 
-const deleteArrElement = (arr, element) => {
-  const index = arr.indexOf(element);
-  const x = arr.splice(index, 1);
-  return arr;
-};
-
-const getAdjacent = (segmentNumber, maxColumns, maxSegments) => {
-  const result = {};
-  const resultArr = [];
-
-  const upperSegment = segmentNumber - maxColumns;
-  const lowerSegment = segmentNumber + maxColumns;
-
-  const leftSegment = segmentNumber - 1;
-  const rightSegment = segmentNumber + 1;
-
-  const topLeftCornerSegment = upperSegment - 1;
-  const topRightCornerSegment = upperSegment + 1;
-  const bottomLeftCornerSegment = lowerSegment - 1;
-  const bottomRightCornerSegment = lowerSegment + 1;
-
-  if (upperSegment >= 0) {
-    result.upperSegment = upperSegment;
-    resultArr.push(upperSegment);
-  }
-  if (lowerSegment <= maxSegments) {
-    result.lowerSegment = lowerSegment;
-    resultArr.push(lowerSegment);
-  }
-  if (segmentNumber % maxColumns !== 0) {
-    result.leftSegment = leftSegment;
-    resultArr.push(leftSegment);
-
-    if (result.upperSegment !== undefined) {
-      result.topLeftCornerSegment = topLeftCornerSegment;
-      // resultArr.push(topLeftCornerSegment);
-    }
-    if (result.lowerSegment !== undefined) {
-      result.bottomLeftCornerSegment = bottomLeftCornerSegment;
-      // resultArr.push(bottomLeftCornerSegment);
-    }
-  }
-  if (rightSegment % maxColumns !== 0) {
-    result.rightSegment = rightSegment;
-    resultArr.push(rightSegment);
-
-    if (result.upperSegment !== undefined) {
-      result.topRightCornerSegment = topRightCornerSegment;
-      // resultArr.push(topRightCornerSegment);
-    }
-    if (result.lowerSegment !== undefined) {
-      result.bottomRightCornerSegment = bottomRightCornerSegment;
-      // resultArr.push(bottomRightCornerSegment);
-    }
-  }
-
-  return resultArr;
-};
-
 const constructPath = (pathTable, beginning, destination) => {
   let segment = findArrElement(pathTable, destination);
   const fullPath = [];
-
   fullPath.push(destination);
 
-  while (segment.vertex !== beginning) {
+  while (segment.vertex !== beginning && segment.previousVertex !== null) {
     destination = segment.previousVertex;
     segment = findArrElement(pathTable, destination);
     fullPath.push(segment.vertex);
   }
   return fullPath;
 };
+
+export { dijkstras };

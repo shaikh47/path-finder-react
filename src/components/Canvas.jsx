@@ -5,7 +5,7 @@ import { dijkstras } from "../calculations/Dijkstras";
 const animationDelay = 1;
 const traverseTillDestinaton = true;
 const segmentDimension = 30;
-const showSegmentNumbers = false;
+const showSegmentNumbers = true;
 const row = Math.floor(window.innerHeight / segmentDimension) - 7;
 const column = Math.floor(window.innerWidth / segmentDimension) - 2;
 
@@ -15,7 +15,7 @@ const delay = (delayInms) => {
 };
 
 function Canvas({ darkMode }) {
-  const pathColor = darkMode? "#2E4F4F":"#5C469C";
+  const pathColor = darkMode ? "#2E4F4F" : "#5C469C";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
   const barrierColor = darkMode ? "#66347F" : "#526D82";
 
@@ -72,7 +72,15 @@ function Canvas({ darkMode }) {
   }, [dijkstrasPath, dijkstrasOptimalPath]);
 
   useEffect(() => {
-    if (dijkstrasPath.length > 0 && dijkstrasOptimalPath.length > 0) {
+    if (
+      dijkstrasPath.length > 0 &&
+      dijkstrasOptimalPath.length > 0 &&
+      beginning !== -1 &&
+      destination !== -1
+    ) {
+      // clear the board first
+      setColorArr([]);
+
       const dijkstrasResult = dijkstras(
         beginning,
         destination,
@@ -114,7 +122,26 @@ function Canvas({ darkMode }) {
   };
 
   const handlSegmenteClick = (key) => {
-    if (key === beginning || key === destination) return;
+    if (key === beginning || beginning === -1) {
+      if (beginning === -1) {
+        if (barrier.includes(key)) return;
+        setBeginning(key);
+      } else {
+        setBeginning(-1);
+      }
+      return;
+    }
+
+    if (key === destination || destination === -1) {
+      if (destination === -1) {
+        if (barrier.includes(key)) return;
+        setDestination(key);
+      } else {
+        setDestination(-1);
+      }
+      return;
+    }
+    console.log("clicked on beginning on dest, key is : ", key);
 
     console.log("Clicked item key:", barrier);
     setBarrier((prevBarriers) => {
@@ -133,7 +160,9 @@ function Canvas({ darkMode }) {
     });
   };
 
-  const handleBeginningClick = (key) => {};
+  const handleBeginningClick = (key) => {
+    console.log(key);
+  };
 
   const handleDestinationClick = (key) => {};
 
@@ -166,9 +195,12 @@ function Canvas({ darkMode }) {
                 ? colorArr[i]
                 : colorArr[i],
             }}
-            className={`${styles.segment} ${
-              darkMode ? styles.segmentDarkMode : ""
-            }`}
+            className={`
+              ${styles.segment} 
+              ${darkMode ? styles.segmentDarkMode : ""} 
+              ${beginning === -1 ? styles.segmentSetBeginning : ""}
+              ${destination === -1 ? styles.segmentSetDestination : ""}
+            `}
             key={i}
             onMouseEnter={() => handlSegmentDrag(i)}
             onMouseUp={() => handleMouseUp(i)}
@@ -194,16 +226,8 @@ function Canvas({ darkMode }) {
 
   return (
     <div className={`${styles.container}`}>
-      {/* <div className={`${styles.canvasContainer}`}>{renderSegments()}</div> */}
-      <div className={`${styles.canvasContainer}`}>{renderSegments()}</div>
+      {renderSegments()}
       <div className={`${styles.buttonContainer}`}>
-        <button
-          className={`${styles.buttons} ${
-            darkMode ? styles.buttonsDarkMode : ""
-          }`}
-        >
-          Add Beginning
-        </button>
         <button
           className={`${styles.buttons} ${
             darkMode ? styles.buttonsDarkMode : ""
