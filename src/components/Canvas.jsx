@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Canvas.module.css";
 import { dijkstras } from "../calculations/Dijkstras";
+import { randomObstacleGenerator } from "../calculations/GenerateMaze";
 
 const animationDelay = 1;
 const traverseTillDestinaton = true;
 const segmentDimension = 30;
-const showSegmentNumbers = true;
+const showSegmentNumbers = false;
 const row = Math.floor(window.innerHeight / segmentDimension) - 7;
 const column = Math.floor(window.innerWidth / segmentDimension) - 2;
+const mazePercentaze = 30;
 
 const delay = (delayInms) => {
   if (delayInms <= 0) return;
@@ -15,7 +17,7 @@ const delay = (delayInms) => {
 };
 
 function Canvas({ darkMode }) {
-  const pathColor = darkMode ? "#2E4F4F" : "#5C469C";
+  const pathColor = darkMode ? "#F9B208" : "#5C469C";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
   const barrierColor = darkMode ? "#66347F" : "#526D82";
 
@@ -233,7 +235,9 @@ function Canvas({ darkMode }) {
             darkMode ? styles.buttonsDarkMode : ""
           }`}
           onClick={() => {
-            setBarrier(presetMaze1);
+            const mazes = randomObstacleGenerator(beginning, destination, row * column, mazePercentaze);
+            console.log(mazes)
+            setBarrier(mazes);
           }}
         >
           Load Maze

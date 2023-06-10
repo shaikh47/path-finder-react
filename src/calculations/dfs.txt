@@ -1,0 +1,9 @@
+1. Choose a starting vertex as the current vertex and mark it as visited.
+2. Push the current vertex onto a stack data structure.
+3. While the stack is not empty, do the following steps:
+    - Pop a vertex from the stack and set it as the current vertex.
+    - Process the current vertex (e.g., print it or perform any desired operations).
+    - Explore all adjacent unvisited vertices of the current vertex.
+    - For each unvisited adjacent vertex, mark it as visited, push it onto the stack, and break the loop.
+4. If there are no unvisited adjacent vertices from the current vertex, backtrack by popping the previous vertex from the stack.
+5. Repeat steps 3 and 4 until the stack becomes empty.
