@@ -1,13 +1,16 @@
 import { Menu } from "antd";
 import { useState, useEffect, useContext } from "react";
-import DarkModeContext from "../../context/darkmode";
 import Switch from "../../components/switch/Switch";
+
+import DarkModeContext from "../../context/darkmode";
+import AlgorithmContext from "../../context/selectedAlgorithm"
 
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const { algorithm, setAlgorithm } = useContext(AlgorithmContext);
 
   const [current, setCurrent] = useState("mail");
-  const [algorithm, setAlgorithm] = useState("Dijkstras");
+  // const [algorithm, setAlgorithm] = useState("Dijkstras");
 
   const onClick = (e) => {
     console.log("clicked ", e);
@@ -43,8 +46,6 @@ const Navbar = () => {
         onClick={onAlgorithmClick}
       >
         <Menu.Item key={"Dijkstras"}>Dijkstras</Menu.Item>
-        <Menu.Item key={"A*"}>A*</Menu.Item>
-        <Menu.Item key={"BFS"}>BFS</Menu.Item>
         <Menu.Item key={"DFS"}>DFS</Menu.Item>
       </Menu.SubMenu>
 

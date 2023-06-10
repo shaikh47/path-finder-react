@@ -21,7 +21,7 @@ const delay = (delayInms) => {
   return new Promise((resolve) => setTimeout(resolve, delayInms));
 };
 
-function Canvas({ darkMode }) {
+function Canvas({ darkMode, algorithm }) {
   const pathColor = darkMode ? "#F9B208" : "#5C469C";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
   const barrierColor = darkMode ? "#66347F" : "#526D82";
@@ -39,25 +39,27 @@ function Canvas({ darkMode }) {
   const [searchedPath, setSearchedPath] = useState([]);
   const [optimalPath, setOptimalPath] = useState([]);
 
+  function algorithmFunction(algo) {
+    if (algo === "Dijkstras") {
+      return dijkstras(beginning, destination, barrier, column, row * column);
+    } else if (algo === "DFS") {
+      return dfs(beginning, destination, barrier, column, row * column);
+    }
+  }
+
   const handleStartAlgoClick = () => {
-    const dijkstrasResult = dijkstras(
-      beginning,
-      destination,
-      barrier,
-      column,
-      row * column
-    );
+    const dijkstrasResult = algorithmFunction(algorithm);
     setSearchedPath(dijkstrasResult.scanned);
     setOptimalPath(dijkstrasResult.optimalPath);
   };
 
-  // runs the initial animation 
+  // runs the initial animation
   useEffect(() => {
     if (searchedPath.length > 0 && optimalPath.length > 0) {
       const startIteration = async () => {
         for (const [index, item] of searchedPath.entries()) {
           if (item === destination && traverseTillDestinaton) break;
-          if(index%delayPerIteration===0) await delay(animationDelay); // delay every 5 iteration
+          if (index % delayPerIteration === 0) await delay(animationDelay); // delay every 5 iteration
           updateColor(item, searchColor);
         }
       };
@@ -90,13 +92,7 @@ function Canvas({ darkMode }) {
       // clear the board first
       setColorArr([]);
 
-      const dijkstrasResult = dijkstras(
-        beginning,
-        destination,
-        barrier,
-        column,
-        row * column
-      );
+      const dijkstrasResult = algorithmFunction(algorithm);
       const startIteration = async () => {
         for (const item of dijkstrasResult.scanned) {
           if (item === destination && traverseTillDestinaton) break;
@@ -210,8 +206,7 @@ function Canvas({ darkMode }) {
         rowElements.push(
           <div
             style={{
-              transition:
-                optimalPath.length > 0 ? "background 0.5s ease" : "",
+              transition: optimalPath.length > 0 ? "background 0.5s ease" : "",
               background: provideColor(i),
             }}
             className={`
@@ -292,10 +287,7 @@ function Canvas({ darkMode }) {
           }`}
           onClick={() => {
             // reset the path on the first click, then reset the obstacles on the second click
-            if (
-              searchedPath.length !== 0 ||
-              optimalPath.length !== 0
-            ) {
+            if (searchedPath.length !== 0 || optimalPath.length !== 0) {
               setSearchedPath([]);
               setOptimalPath([]);
             } else {
