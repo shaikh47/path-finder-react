@@ -1,15 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Canvas.module.css";
-import { dijkstras } from "../calculations/Dijkstras";
-import { randomObstacleGenerator } from "../calculations/GenerateMaze";
 
-const animationDelay = 1;
+import { dijkstras } from "../calculations/Dijkstras";
+import { dfs } from "../calculations/Dfs";
+
+import { randomObstacleGenerator } from "../calculations/GenerateMaze";
+import { deleteArrElement } from "../calculations/Utils";
+
 const traverseTillDestinaton = true;
 const segmentDimension = 30;
 const showSegmentNumbers = false;
 const row = Math.floor(window.innerHeight / segmentDimension) - 7;
 const column = Math.floor(window.innerWidth / segmentDimension) - 2;
 const mazePercentaze = 30;
+const animationDelay = 1;
+const delayPerIteration = 5;
 
 const delay = (delayInms) => {
   if (delayInms <= 0) return;
@@ -31,8 +36,8 @@ function Canvas({ darkMode }) {
 
   const [colorArr, setColorArr] = useState([]);
 
-  const [dijkstrasPath, setDijkstrasPath] = useState([]);
-  const [dijkstrasOptimalPath, setDijkstrasOptimalPath] = useState([]);
+  const [searchedPath, setSearchedPath] = useState([]);
+  const [optimalPath, setOptimalPath] = useState([]);
 
   const handleStartAlgoClick = () => {
     const dijkstrasResult = dijkstras(
@@ -42,22 +47,23 @@ function Canvas({ darkMode }) {
       column,
       row * column
     );
-    setDijkstrasPath(dijkstrasResult.scanned);
-    setDijkstrasOptimalPath(dijkstrasResult.optimalPath);
+    setSearchedPath(dijkstrasResult.scanned);
+    setOptimalPath(dijkstrasResult.optimalPath);
   };
 
+  // runs the initial animation 
   useEffect(() => {
-    if (dijkstrasPath.length > 0 && dijkstrasOptimalPath.length > 0) {
+    if (searchedPath.length > 0 && optimalPath.length > 0) {
       const startIteration = async () => {
-        for (const item of dijkstrasPath) {
+        for (const [index, item] of searchedPath.entries()) {
           if (item === destination && traverseTillDestinaton) break;
-          await delay(animationDelay);
+          if(index%delayPerIteration===0) await delay(animationDelay); // delay every 5 iteration
           updateColor(item, searchColor);
         }
       };
 
       const startIterationOptimized = async () => {
-        for (const item of dijkstrasOptimalPath) {
+        for (const [index, item] of optimalPath.entries()) {
           await delay(animationDelay + 30);
           updateColor(item, pathColor);
         }
@@ -65,18 +71,19 @@ function Canvas({ darkMode }) {
 
       const runEffect = async () => {
         await startIteration();
-        await startIterationOptimized();
+        startIterationOptimized();
         console.log("completed path optimization");
       };
 
       runEffect();
     }
-  }, [dijkstrasPath, dijkstrasOptimalPath]);
+  }, [searchedPath, optimalPath]);
 
+  // runs the later renders
   useEffect(() => {
     if (
-      dijkstrasPath.length > 0 &&
-      dijkstrasOptimalPath.length > 0 &&
+      searchedPath.length > 0 &&
+      optimalPath.length > 0 &&
       beginning !== -1 &&
       destination !== -1
     ) {
@@ -124,6 +131,7 @@ function Canvas({ darkMode }) {
   };
 
   const handlSegmenteClick = (key) => {
+    // handle beginning segment click
     if (key === beginning || beginning === -1) {
       if (beginning === -1) {
         if (barrier.includes(key)) return;
@@ -134,6 +142,7 @@ function Canvas({ darkMode }) {
       return;
     }
 
+    // handle destination segment click
     if (key === destination || destination === -1) {
       if (destination === -1) {
         if (barrier.includes(key)) return;
@@ -143,15 +152,19 @@ function Canvas({ darkMode }) {
       }
       return;
     }
-    console.log("clicked on beginning on dest, key is : ", key);
 
+    // handle barrier segment click
+    if (barrier.includes(key)) {
+      setBarrier([...deleteArrElement(barrier, key)]);
+    } else {
+      setBarrier((prevBarriers) => {
+        if (!prevBarriers.includes(key)) {
+          return [...prevBarriers, key];
+        }
+        return prevBarriers;
+      });
+    }
     console.log("Clicked item key:", barrier);
-    setBarrier((prevBarriers) => {
-      if (!prevBarriers.includes(key)) {
-        return [...prevBarriers, key];
-      }
-      return prevBarriers;
-    });
   };
 
   const updateColor = (index, newColor) => {
@@ -176,6 +189,18 @@ function Canvas({ darkMode }) {
     isClicked.current = true;
   };
 
+  const provideColor = (i) => {
+    if (barrier.includes(i)) {
+      return barrierColor;
+    } else if (beginning === i) {
+      return "green";
+    } else if (destination === i) {
+      return "red";
+    } else {
+      return colorArr[i];
+    }
+  };
+
   const renderSegments = () => {
     let elements = [];
     let rowElements = [];
@@ -186,16 +211,8 @@ function Canvas({ darkMode }) {
           <div
             style={{
               transition:
-                dijkstrasOptimalPath.length > 0 ? "background 0.5s ease" : "",
-              background: barrier.includes(i)
-                ? barrierColor
-                : beginning === i
-                ? "green"
-                : destination === i
-                ? "red"
-                : currentSegment === i
-                ? colorArr[i]
-                : colorArr[i],
+                optimalPath.length > 0 ? "background 0.5s ease" : "",
+              background: provideColor(i),
             }}
             className={`
               ${styles.segment} 
@@ -235,8 +252,13 @@ function Canvas({ darkMode }) {
             darkMode ? styles.buttonsDarkMode : ""
           }`}
           onClick={() => {
-            const mazes = randomObstacleGenerator(beginning, destination, row * column, mazePercentaze);
-            console.log(mazes)
+            const mazes = randomObstacleGenerator(
+              beginning,
+              destination,
+              row * column,
+              mazePercentaze
+            );
+            console.log(mazes);
             setBarrier(mazes);
           }}
         >
@@ -269,9 +291,16 @@ function Canvas({ darkMode }) {
             darkMode ? styles.buttonsDarkMode : ""
           }`}
           onClick={() => {
-            setDijkstrasPath([]);
-            setBarrier([]);
-            setDijkstrasOptimalPath([]);
+            // reset the path on the first click, then reset the obstacles on the second click
+            if (
+              searchedPath.length !== 0 ||
+              optimalPath.length !== 0
+            ) {
+              setSearchedPath([]);
+              setOptimalPath([]);
+            } else {
+              setBarrier([]);
+            }
             setColorArr([]);
           }}
         >
