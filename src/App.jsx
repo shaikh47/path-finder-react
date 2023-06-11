@@ -20,7 +20,7 @@ function App() {
     <>
       <Navbar />
       <div className="container">
-        <h1 style={{ color: darkMode ? "white" : "#222831" }}>Dijkstras</h1>
+        <h1 style={{ color: darkMode ? "white" : "#222831" }}>Algorithm Visualizer</h1>
         <Canvas darkMode={darkMode} algorithm={algorithm}/>
         {/* <Test /> */}
       </div>

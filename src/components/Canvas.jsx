@@ -22,9 +22,9 @@ const delay = (delayInms) => {
 };
 
 function Canvas({ darkMode, algorithm }) {
-  const pathColor = darkMode ? "#F9B208" : "#5C469C";
+  const pathColor = darkMode ? "#F9B208" : "#FF7396";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
-  const barrierColor = darkMode ? "#66347F" : "#526D82";
+  const barrierColor = darkMode ? "#66347F" : "#393053";
 
   const [barrier, setBarrier] = useState([]);
   const isClicked = useRef(false);
