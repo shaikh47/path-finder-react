@@ -1,4 +1,4 @@
-import { deleteArrElement, getAdjacent } from "./Utils";
+import { getAdjacent } from "./Utils";
 
 const dfs = (beginning, destination, barriers, maxColumns, maxSegments) => {
   let optimalPath = [];
@@ -38,13 +38,6 @@ const dfs = (beginning, destination, barriers, maxColumns, maxSegments) => {
 
   optimalPath = scanned.slice(0, scanned.indexOf(destination) + 1);
   return { scanned, optimalPath };
-};
-
-const arrayContainsAllElements = (arr1, arr2) => {
-  for (const item of arr1) {
-    if (!arr2.includes(item)) return false;
-  }
-  return true;
 };
 
 const peekStack = (stack) => {
