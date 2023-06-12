@@ -27,7 +27,6 @@ function Canvas({
   setColorArr,
   row,
   column,
-  traverseTillDestinaton,
   showSegmentNumbers,
   animationDelay,
   delayPerIteration
@@ -44,7 +43,7 @@ function Canvas({
     if (searchedPath.length > 0 && optimalPath.length > 0) {
       const startIteration = async () => {
         for (const [index, item] of searchedPath.entries()) {
-          if (item === destination && traverseTillDestinaton) break;
+          if (item === destination) break;
           if (index % delayPerIteration === 0) await delay(animationDelay); // delay every 5 iteration
           updateColor(item, searchColor);
         }
@@ -88,7 +87,7 @@ function Canvas({
       );
       const startIteration = async () => {
         for (const item of dijkstrasResult.scanned) {
-          if (item === destination && traverseTillDestinaton) break;
+          if (item === destination) break;
           updateColor(item, searchColor);
         }
       };
@@ -153,7 +152,6 @@ function Canvas({
         return prevBarriers;
       });
     }
-    console.log("Clicked item key:", barrier);
   };
 
   const updateColor = (index, newColor) => {

@@ -8,7 +8,6 @@ import { randomObstacleGenerator } from "../calculations/GenerateMaze";
 import { algorithmFunction } from "../calculations/Utils";
 import { useState, useEffect, useContext } from "react";
 
-const traverseTillDestinaton = true;
 const segmentDimension = 30;
 const showSegmentNumbers = false;
 const row = Math.floor(window.innerHeight / segmentDimension) - 5;
@@ -57,7 +56,6 @@ function Home() {
       row * column,
       mazePercentaze
     );
-    console.log(mazes);
     setBarrier(mazes);
   };
 
@@ -101,7 +99,6 @@ function Home() {
           setColorArr={setColorArr}
           row={row}
           column={column}
-          traverseTillDestinaton={traverseTillDestinaton}
           showSegmentNumbers={showSegmentNumbers}
           animationDelay={animationDelay}
           delayPerIteration={delayPerIteration}

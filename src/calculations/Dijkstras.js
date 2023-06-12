@@ -11,15 +11,20 @@ const dijkstras = (
   maxSegments
 ) => {
   let pathTable = [];
-  const visitedVertices = [];
   const scanned = [beginning];
 
-  for (let i = 0; i <= maxSegments; i++) {
-    getAdjacent(scanned[i], maxColumns, maxSegments).forEach((item, index) => {
+  outerLoop: for (let i = 0; i <= maxSegments; i++) {
+    for (let index in getAdjacent(scanned[i], maxColumns, maxSegments)) {
+      let item = getAdjacent(scanned[i], maxColumns, maxSegments)[index];
       if (!scanned.includes(item) && item < maxSegments) {
-        if (!barriers.includes(item)) scanned.push(item);
+        if (!barriers.includes(item)) {
+          scanned.push(item);
+        }
       }
-    });
+      if (item === destination) {
+        break outerLoop;
+      }
+    }
   }
 
   let unvisitedVertices = Array.from(scanned);
@@ -85,9 +90,6 @@ const dijkstras = (
       unvisitedVertices,
       smallestDist.vertex
     );
-
-    // add it to the visited vertices list
-    visitedVertices.push(smallestDist);
   }
 
   const optimalPath = constructPath(
@@ -95,6 +97,8 @@ const dijkstras = (
     beginning,
     destination
   ).reverse();
+
+  console.log({ scanned, optimalPath });
   return { scanned, optimalPath };
 };
 
