@@ -1,0 +1,29 @@
+.rightElement {
+  margin-left: auto !important;
+}
+
+.resetButton {
+  color: #ff0000;
+  font-weight: 600;
+}
+
+.resetButton:hover {
+  background: #ff0000 !important;
+}
+
+.startButton {
+  color: #1d8f35;
+  font-weight: 600;
+}
+
+.startButton:hover {
+  background: #1d8f35 !important;
+}
+
+.controlButtons {
+  font-weight: 600;
+}
+
+.controlButtons:hover {
+  background: #5f6ce1 !important;
+}

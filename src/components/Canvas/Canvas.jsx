@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Canvas.module.css";
 
-import { dijkstras } from "../calculations/Dijkstras";
-import { dfs } from "../calculations/Dfs";
+import { dijkstras } from "../../calculations/Dijkstras";
+import { dfs } from "../../calculations/Dfs";
 
-import { randomObstacleGenerator } from "../calculations/GenerateMaze";
-import { deleteArrElement } from "../calculations/Utils";
+import { randomObstacleGenerator } from "../../calculations/GenerateMaze";
+import { deleteArrElement } from "../../calculations/Utils";
 
 const traverseTillDestinaton = true;
 const segmentDimension = 30;
@@ -21,7 +21,7 @@ const delay = (delayInms) => {
   return new Promise((resolve) => setTimeout(resolve, delayInms));
 };
 
-function Canvas({ darkMode, algorithm }) {
+function Canvas({ darkMode, algorithm, handleStartClick }) {
   const pathColor = darkMode ? "#F9B208" : "#FF7396";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
   const barrierColor = darkMode ? "#66347F" : "#393053";
@@ -208,6 +208,8 @@ function Canvas({ darkMode, algorithm }) {
             style={{
               transition: optimalPath.length > 0 ? "background 0.5s ease" : "",
               background: provideColor(i),
+              boxShadow: barrier.includes(i) ? "none" : "",
+              outline: barrier.includes(i) ? "1px solid" : "",
             }}
             className={`
               ${styles.segment} 

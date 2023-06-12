@@ -7,13 +7,15 @@
 }
 
 .segment {
-  outline: 1px solid;
+  /* outline: 1px solid; */
   width: 30px;
   height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgb(255, 255, 255);
+
+  box-shadow: inset 2px 2px 4px black;
 }
 
 .segmentDarkMode {
@@ -22,10 +24,12 @@
 
 .segmentSetBeginning:hover {
   background: #1d8f35 !important;
+  box-shadow: none;
 }
 
 .segmentSetDestination:hover {
   background: red !important;
+  box-shadow: none;
 }
 
 .segment p:hover {
