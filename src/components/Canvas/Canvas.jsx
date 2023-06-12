@@ -4,54 +4,40 @@ import styles from "./Canvas.module.css";
 import { dijkstras } from "../../calculations/Dijkstras";
 import { dfs } from "../../calculations/Dfs";
 
-import { randomObstacleGenerator } from "../../calculations/GenerateMaze";
 import { deleteArrElement } from "../../calculations/Utils";
-
-const traverseTillDestinaton = true;
-const segmentDimension = 30;
-const showSegmentNumbers = false;
-const row = Math.floor(window.innerHeight / segmentDimension) - 7;
-const column = Math.floor(window.innerWidth / segmentDimension) - 2;
-const mazePercentaze = 30;
-const animationDelay = 1;
-const delayPerIteration = 5;
+import { algorithmFunction } from "../../calculations/Utils";
 
 const delay = (delayInms) => {
   if (delayInms <= 0) return;
   return new Promise((resolve) => setTimeout(resolve, delayInms));
 };
 
-function Canvas({ darkMode, algorithm, handleStartClick }) {
+function Canvas({
+  darkMode,
+  algorithm,
+  searchedPath,
+  optimalPath,
+  setBeginning,
+  setDestination,
+  beginning,
+  destination,
+  barrier,
+  setBarrier,
+  colorArr,
+  setColorArr,
+  row,
+  column,
+  traverseTillDestinaton,
+  showSegmentNumbers,
+  animationDelay,
+  delayPerIteration
+}) {
   const pathColor = darkMode ? "#F9B208" : "#FF7396";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
   const barrierColor = darkMode ? "#66347F" : "#393053";
 
-  const [barrier, setBarrier] = useState([]);
   const isClicked = useRef(false);
-
-  const [beginning, setBeginning] = useState(0);
-  const [destination, setDestination] = useState(row * column - 1);
-
-  const [currentSegment, setCurrentSegment] = useState(0);
-
-  const [colorArr, setColorArr] = useState([]);
-
-  const [searchedPath, setSearchedPath] = useState([]);
-  const [optimalPath, setOptimalPath] = useState([]);
-
-  function algorithmFunction(algo) {
-    if (algo === "Dijkstras") {
-      return dijkstras(beginning, destination, barrier, column, row * column);
-    } else if (algo === "DFS") {
-      return dfs(beginning, destination, barrier, column, row * column);
-    }
-  }
-
-  const handleStartAlgoClick = () => {
-    const dijkstrasResult = algorithmFunction(algorithm);
-    setSearchedPath(dijkstrasResult.scanned);
-    setOptimalPath(dijkstrasResult.optimalPath);
-  };
+  // const [currentSegment, setCurrentSegment] = useState(0);
 
   // runs the initial animation
   useEffect(() => {
@@ -92,7 +78,14 @@ function Canvas({ darkMode, algorithm, handleStartClick }) {
       // clear the board first
       setColorArr([]);
 
-      const dijkstrasResult = algorithmFunction(algorithm);
+      const dijkstrasResult = algorithmFunction(
+        algorithm,
+        beginning,
+        destination,
+        barrier,
+        row,
+        column
+      );
       const startIteration = async () => {
         for (const item of dijkstrasResult.scanned) {
           if (item === destination && traverseTillDestinaton) break;
@@ -171,12 +164,6 @@ function Canvas({ darkMode, algorithm, handleStartClick }) {
     });
   };
 
-  const handleBeginningClick = (key) => {
-    console.log(key);
-  };
-
-  const handleDestinationClick = (key) => {};
-
   const handleMouseUp = () => {
     isClicked.current = false;
   };
@@ -240,69 +227,7 @@ function Canvas({ darkMode, algorithm, handleStartClick }) {
     return elements;
   };
 
-  return (
-    <div className={`${styles.container}`}>
-      {renderSegments()}
-      <div className={`${styles.buttonContainer}`}>
-        <button
-          className={`${styles.buttons} ${
-            darkMode ? styles.buttonsDarkMode : ""
-          }`}
-          onClick={() => {
-            const mazes = randomObstacleGenerator(
-              beginning,
-              destination,
-              row * column,
-              mazePercentaze
-            );
-            console.log(mazes);
-            setBarrier(mazes);
-          }}
-        >
-          Load Maze
-        </button>
-
-        <button
-          className={`${styles.buttons} ${
-            darkMode ? styles.buttonsDarkMode : ""
-          }`}
-          onClick={() => {
-            const updatedBarrier = [...barrier];
-            updatedBarrier.pop();
-            setBarrier(updatedBarrier);
-          }}
-        >
-          Remove Barrier
-        </button>
-        <button
-          className={`${styles.buttons} ${styles.startButton} ${
-            darkMode ? styles.buttonsDarkMode : ""
-          }`}
-          onClick={handleStartAlgoClick}
-        >
-          Start Algo
-        </button>
-
-        <button
-          className={`${styles.buttons} ${styles.resetButton} ${
-            darkMode ? styles.buttonsDarkMode : ""
-          }`}
-          onClick={() => {
-            // reset the path on the first click, then reset the obstacles on the second click
-            if (searchedPath.length !== 0 || optimalPath.length !== 0) {
-              setSearchedPath([]);
-              setOptimalPath([]);
-            } else {
-              setBarrier([]);
-            }
-            setColorArr([]);
-          }}
-        >
-          Reset
-        </button>
-      </div>
-    </div>
-  );
+  return <div className={`${styles.container}`}>{renderSegments()}</div>;
 }
 
 export default Canvas;

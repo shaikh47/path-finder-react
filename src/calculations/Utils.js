@@ -1,3 +1,6 @@
+import { dijkstras } from "../calculations/Dijkstras";
+import { dfs } from "../calculations/Dfs";
+
 const deleteArrElement = (arr, element) => {
   const index = arr.indexOf(element);
   const deleted = arr.splice(index, 1);
@@ -56,4 +59,19 @@ const getAdjacent = (segmentNumber, maxColumns, maxSegments) => {
   return resultArr;
 };
 
-export { deleteArrElement, getAdjacent };
+const algorithmFunction = (
+  algo,
+  beginning,
+  destination,
+  barrier,
+  row,
+  column
+) => {
+  if (algo === "Dijkstras") {
+    return dijkstras(beginning, destination, barrier, column, row * column);
+  } else if (algo === "DFS") {
+    return dfs(beginning, destination, barrier, column, row * column);
+  }
+};
+
+export { deleteArrElement, getAdjacent, algorithmFunction };
