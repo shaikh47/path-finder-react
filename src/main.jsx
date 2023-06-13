@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./styles/index.css";
 import { Provider } from "./context/darkmode.jsx";
 import { AlgorithmProvider } from "./context/selectedAlgorithm.jsx";
 

@@ -29,14 +29,13 @@ function Canvas({
   column,
   showSegmentNumbers,
   animationDelay,
-  delayPerIteration
+  delayPerIteration,
 }) {
   const pathColor = darkMode ? "#F9B208" : "#FF7396";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
   const barrierColor = darkMode ? "#66347F" : "#393053";
 
   const isClicked = useRef(false);
-  // const [currentSegment, setCurrentSegment] = useState(0);
 
   // runs the initial animation
   useEffect(() => {
@@ -51,7 +50,7 @@ function Canvas({
 
       const startIterationOptimized = async () => {
         for (const [index, item] of optimalPath.entries()) {
-          await delay(animationDelay + 30);
+          await delay(animationDelay + 15);
           updateColor(item, pathColor);
         }
       };
@@ -204,8 +203,8 @@ function Canvas({
             `}
             key={i}
             onMouseEnter={() => handlSegmentDrag(i)}
-            onMouseUp={() => handleMouseUp(i)}
-            onMouseDown={() => handleMouseDown(i)}
+            onMouseUp={() => handleMouseUp()}
+            onMouseDown={() => handleMouseDown()}
             onClick={() => handlSegmenteClick(i)}
           >
             {showSegmentNumbers ? (

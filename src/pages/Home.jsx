@@ -10,8 +10,14 @@ import { useState, useEffect, useContext } from "react";
 
 const segmentDimension = 30;
 const showSegmentNumbers = false;
-const row = Math.floor(window.innerHeight / segmentDimension) - 5;
-const column = Math.floor(window.innerWidth / segmentDimension) - 2;
+const row =
+  Math.floor(window.innerHeight / segmentDimension) - 5 >= 27
+    ? 27
+    : Math.floor(window.innerHeight / segmentDimension) - 5;
+const column =
+  Math.floor(window.innerWidth / segmentDimension) - 2 >= 61
+    ? 61
+    : Math.floor(window.innerWidth / segmentDimension) - 2;
 const mazePercentaze = 30;
 const animationDelay = 1;
 const delayPerIteration = 5;
