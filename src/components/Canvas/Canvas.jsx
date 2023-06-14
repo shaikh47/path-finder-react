@@ -7,6 +7,9 @@ import { dfs } from "../../calculations/Dfs";
 import { deleteArrElement } from "../../calculations/Utils";
 import { algorithmFunction } from "../../calculations/Utils";
 
+import start from "../../assets/start.png";
+import finish from "../../assets/finish.png";
+
 const delay = (delayInms) => {
   if (delayInms <= 0) return;
   return new Promise((resolve) => setTimeout(resolve, delayInms));
@@ -34,7 +37,6 @@ function Canvas({
   const pathColor = darkMode ? "#F9B208" : "#FF7396";
   const searchColor = darkMode ? "#537EC5" : "#98EECC";
   const barrierColor = darkMode ? "#66347F" : "#393053";
-
   const isClicked = useRef(false);
 
   // runs the initial animation
@@ -212,6 +214,9 @@ function Canvas({
             ) : (
               <></>
             )}
+
+            {destination === i ? <img src={finish} alt="finish" /> : ""}
+            {beginning === i ? <img src={start} alt="start" /> : ""}
           </div>
         );
       }

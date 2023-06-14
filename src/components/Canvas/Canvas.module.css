@@ -49,48 +49,8 @@
   gap: 20px;
 }
 
-.buttons {
-  border-radius: 12px;
-
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-align: center;
-
-  padding: 10px 20px;
-  width: 10rem;
-
-  background: #ffffff;
-  border: 1px solid #5f6ce1;
-  color: #5f6ce1;
-  transition: 0.3s;
-
-  flex-basis: 20%;
-}
-
-.buttonsDarkMode {
-  background: #2b2e4a;
-}
-
-.buttons:hover {
-  color: #ffffff;
-  background: #5f6ce1;
-  cursor: pointer;
-}
-
-.resetButton {
-  color: #ff0000;
-  border: 2px solid #ff0000;
-}
-
-.resetButton:hover {
-  background: #ff0000;
-}
-
-.startButton {
-  color: #1d8f35;
-  border: 2px solid #1d8f35;
-}
-
-.startButton:hover {
-  background: #1d8f35;
+div.segment > img {
+  max-width: 100%;
+  max-height: 100%;
+  user-select: none;
 }
