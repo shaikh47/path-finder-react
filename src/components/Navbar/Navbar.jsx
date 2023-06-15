@@ -65,6 +65,7 @@ const Navbar = ({
 
       <Menu.Item
         className={`${styles.rightElement} ${styles.startButton}`}
+        style={{ display: current === "home" ? "" : "none" }}
         key="start"
         onClick={handleStartClick}
       >
@@ -77,6 +78,7 @@ const Navbar = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          display: current === "home" ? "" : "none",
         }}
         key="load-maze"
         onClick={handleLoadMazeClick}
@@ -88,11 +90,13 @@ const Navbar = ({
         key="reset"
         className={`${styles.resetButton}`}
         onClick={handleResetClick}
+        style={{ display: current === "home" ? "" : "none" }}
       >
         Reset
       </Menu.Item>
 
       <Menu.Item
+        className={`${current === "home" ? "" : styles.rightElement}`}
         style={{
           display: "flex",
           alignItems: "center",

@@ -1,8 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import styles from "./Canvas.module.css";
-
-import { dijkstras } from "../../calculations/Dijkstras";
-import { dfs } from "../../calculations/Dfs";
 
 import { deleteArrElement } from "../../calculations/Utils";
 import { algorithmFunction } from "../../calculations/Utils";
