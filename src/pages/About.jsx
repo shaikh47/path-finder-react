@@ -56,8 +56,8 @@ function About() {
               justifyContent: "center",
             }}
           >
-            <div className="button">Button 1</div>
-            <div className="button">Button 2</div>
+            {/* <div className="button">Button 1</div>
+            <div className="button">Button 2</div> */}
           </div>
         </div>
       </div>
