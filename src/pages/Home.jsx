@@ -20,7 +20,7 @@ const column =
     : Math.floor(window.innerWidth / segmentDimension) - 2;
 const mazePercentaze = 30;
 const animationDelay = 1;
-const delayPerIteration = 5;
+const delayPerIteration = 3;
 
 function Home() {
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
